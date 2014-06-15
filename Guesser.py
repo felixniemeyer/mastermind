@@ -22,11 +22,36 @@ class Guesser:
 				joinOptions(newOptions)
 	
 	def interpretFeedback(self, guess, feedback):
+		newOptions = set()
 		guessSet = set(guess)
 		half, full = feedback
 		for fullColors in itertools.combinations(guessSet, full):
 			fullColorsSet = set(fullColors)
-			for halfColors in itertools.permutations(guessSet - fullColorsSet, half):
+			for halfColors in itertools.combinations(guessSet - fullColorsSet, half):
+				halfColorsSet = set(halfColors)
+				halfColorsDummies = ["h"+str(i) for i in halfColors ]
+				for possibility in itertools.permutations((range(self.height) - guessSet) | halfColorsDummies):
+					halfColorsSet = set(halfColors)
+					allowed = []
+					counter = 0
+					skip = False
+					for position in possibility: 
+						while guess[counter] in fullColors: 
+							allowed.append(guess[counter])
+							counter += 1
+						if type(position) is str:
+							color = int(position[1:])
+							if color == guess[counter]: #halfColor may not be at the same place it was in the guess
+								skip = True
+								break
+							else
+								allowed.append(color)
+						else:
+							allowed.append([x for x in set(range(self.height)) - guessSet])
+						counter += 1
+					if not skip:
+						newOptions.add(Option(allowed))
+		return newOptions
 	
 	def joinOptions(self, newOptions):
 		joinedOptions = set()
