@@ -1,11 +1,11 @@
-import ManualFeedbacker
-import Guesser
+from manualfeedbacker import ManualFeedbacker
+from guesser import Guesser
 
-print "Welcome, im a masterminded bot."
+print("Welcome, im a masterminded bot.")
 
 guesser = Guesser(ManualFeedbacker())
-guesser.solve()
+solutionString = guesser.solve()
 
-print "Goodbye you fool! ;)"
+print("Well it seems like i've found the solution. It's: " + solutionString)
 
-
+print("Goodbye you fool! ;)")
